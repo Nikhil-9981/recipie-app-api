@@ -1,0 +1,21 @@
+docker-compose run --rm app sh -c "python manage.py collectstatic"
+docker build .
+
+# linting - to find any error
+docker-compose run --rm app sh -c "flake8"  
+
+# Unit testing
+docker-compose run --rm app sh -c "python manage.py test"
+
+docker-compose build
+
+
+docker compose run --rm app sh -c "flake8"
+
+#start project
+
+docker-compose run --rm app sh -c "django-admin startproject app ."
+
+# run the services
+
+docker-compose up
