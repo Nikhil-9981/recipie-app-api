@@ -19,3 +19,5 @@ docker-compose run --rm app sh -c "django-admin startproject app ."
 # run the services
 
 docker-compose up
+# to remove containers
+docker-compose down 
