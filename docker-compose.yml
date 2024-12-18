@@ -1,5 +1,4 @@
 
-version: "3.9"
 
 services:
   app:
@@ -36,4 +35,4 @@ services:
 volumes:
   dev-db-data:
 
-    
+

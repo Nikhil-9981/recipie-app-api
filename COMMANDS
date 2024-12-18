@@ -2,7 +2,7 @@ docker-compose run --rm app sh -c "python manage.py collectstatic"
 docker build .
 
 # linting - to find any error
-docker-compose run --rm app sh -c "flake8"  
+docker-compose run --rm app sh -c "flake8"
 
 # Unit testing
 docker-compose run --rm app sh -c "python manage.py test"
@@ -20,4 +20,9 @@ docker-compose run --rm app sh -c "django-admin startproject app ."
 
 docker-compose up
 # to remove containers
-docker-compose down 
+docker-compose down
+# lsiting all volumes
+doxker volume ls
+
+# to remove volume
+docker volume rm <volume name> # but before using this use "docker-compose down"
