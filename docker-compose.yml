@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   app:
     build:
@@ -16,10 +14,11 @@ services:
              python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
     environment:
-      - DB_HOST=db
-      - DB_NAME=devdb
-      - DB_USER=devuser
-      - DB_PASS=changeme
+      - DB_HOST=dpg-ctm5pfi3esus739nbpv0-a.frankfurt-postgres.render.com
+      - DB_PORT=5432
+      - DB_NAME=nikhil_qmz4
+      - DB_USER=nikhil_qmz4_user
+      - DB_PASS=cBGWpZONX1LT8FYhVlM6J0jvevvqnVJp
       - DEBUG=1
     depends_on:
       - db
@@ -29,10 +28,6 @@ services:
     volumes:
       - dev-db-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=devdb
-      - POSTGRES_USER=devuser
-      - POSTGRES_PASSWORD=changeme
-
-volumes:
-  dev-db-data:
-  dev-static-data:
+      - POSTGRES_DB=nikhil_qmz4
+      - POSTGRES_USER=nikhil_qmz4_user
+      - POSTGRES_PASSWORD=cBGWpZONX1LT8FYhVlM6J0jvevvqnVJp
