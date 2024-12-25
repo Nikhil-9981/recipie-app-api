@@ -26,3 +26,10 @@ doxker volume ls
 
 # to remove volume
 docker volume rm <volume name> # but before using this use "docker-compose down"
+
+# to run deploy file locally
+
+#first down the fiel means shut domw
+docker-compose -f docker-compose-deploy.yml down
+# then up the file
+docker-compose -f docker-compose-deploy.yml up

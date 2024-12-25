@@ -1,4 +1,5 @@
 
+from decimal import Decimal
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.test import TestCase
@@ -6,7 +7,7 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Ingredient
+from core.models import Ingredient, Recipe
 from recipe.serializers import IngredientSerializer
 
 INGREDIENT_URL = reverse('recipe:ingredient-list')
@@ -92,6 +93,46 @@ class PrivateIngredientsApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         ingredients = Ingredient.objects.filter(user=self.user)
         self.assertFalse(ingredients.exists())
+
+    def test_filter_ingredients_assigned_to_recipes(self):
+        in1 = Ingredient.objects.create(user=self.user, name='Apples')
+        in2 = Ingredient.objects.create(user=self.user, name='Turkey')
+        recipe = Recipe.objects.create(
+            user=self.user,
+            title='Apple crumble',
+            time_minutes=5,
+            price=10.00
+        )
+        recipe.ingredients.add(in1)
+
+        res = self.client.get(INGREDIENT_URL, {'assigned_only': 1})
+
+        s1 = IngredientSerializer(in1)
+        s2 = IngredientSerializer(in2)
+        self.assertIn(s1.data, res.data)
+        self.assertNotIn(s2.data, res.data)
+
+    def test_filtered_ingredients_unique(self):
+        in1 = Ingredient.objects.create(user=self.user, name='Apples')
+        Ingredient.objects.create(user=self.user, name='Turkey')
+        recipe1 = Recipe.objects.create(
+            user=self.user,
+            title='Apple crumble',
+            time_minutes=5,
+            price=Decimal('10.00')
+        )
+        recipe1.ingredients.add(in1)
+        recipe2 = Recipe.objects.create(
+            user=self.user,
+            title='Apple pie',
+            time_minutes=5,
+            price=Decimal('10.00')
+        )
+        recipe2.ingredients.add(in1)
+
+        res = self.client.get(INGREDIENT_URL, {'assigned_only': 1})
+
+        self.assertEqual(len(res.data), 1)
 
 
     
